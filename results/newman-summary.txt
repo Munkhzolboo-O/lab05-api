@@ -1,0 +1,12 @@
+﻿Newman Test Results - Lab 05
+
+Iterations: 1
+Requests: 16
+Test scripts: 9
+Assertions: 18
+
+Failed requests: 0
+Failed test scripts: 0
+Failed assertions: 0
+
+Result: PASS

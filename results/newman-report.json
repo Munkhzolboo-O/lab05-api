@@ -1,0 +1,3674 @@
+{
+  "collection": {
+    "_": {
+      "postman_id": "f982c627-755b-42ed-933b-d550e9b5631a",
+      "exporter_id": "58727003",
+      "collection_link": "https://go.postman.co/collection/58727003-f982c627-755b-42ed-933b-d550e9b5631a?source=collection_link"
+    },
+    "item": [
+      {
+        "id": "5708cfcb-70ba-4d70-aa98-4c4663db7a75",
+        "name": "01 - Happy Path",
+        "item": [
+          {
+            "id": "dccf3c16-e66c-4c49-a674-b243d0214f1d",
+            "name": "Setup - Active Student with CS201",
+            "request": {
+              "url": {
+                "path": [
+                  "students",
+                  "B231234567"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "PUT",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": []
+          },
+          {
+            "id": "a21f3e6e-06bd-4ecd-8513-1ad45a1651d7",
+            "name": "Setup - Course CS313 requires CS201",
+            "request": {
+              "url": {
+                "path": [
+                  "courses",
+                  "CS313"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "PUT",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": []
+          },
+          {
+            "id": "d51d39d9-5135-43c3-83f6-ef83444f2fab",
+            "name": "Happy Path - Successful Registration",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "24e88773-f3ca-4548-b97f-b39d9e26b5de",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
+                  ],
+                  "_lastExecutionId": "bf6c7fc6-5fea-4b5a-91b0-cefc6bf688d5"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "8cccc825-d1ad-4ebf-8154-3509f011eb88",
+        "name": "02 - No Student",
+        "item": [
+          {
+            "id": "3f580c22-8292-4e1b-8701-c8f4995d0d54",
+            "name": "No Student - ERROR_NO_STUDENT",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B_DOES_NOT_EXIST\",\r\n  \"courseID\": \"CS313\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "924e9e3d-23cd-4beb-824c-f1ee13ebb550",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_NO_STUDENT\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_NO_STUDENT\");\r\n});"
+                  ],
+                  "_lastExecutionId": "39385f9f-a6aa-4bba-af3d-dda1ed61cd0c"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "28dcaebd-38ab-4e95-bedf-988195b5d6e1",
+        "name": "03 - Inactive Student",
+        "item": [
+          {
+            "id": "4ed66219-a900-4c09-b800-49a84459ee8f",
+            "name": "Setup - Inactive Student",
+            "request": {
+              "url": {
+                "path": [
+                  "students",
+                  "B_INACTIVE"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "PUT",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"status\": \"inactive\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": []
+          },
+          {
+            "id": "85f64f2e-a1f1-4476-a427-3da2f5e0912d",
+            "name": "Inactive Student - ERROR_INACTIVE_STUDENT",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B_INACTIVE\",\r\n  \"courseID\": \"CS313\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "68d3aca0-fc5e-46a8-be8b-a4db4332d4b0",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_INACTIVE_STUDENT\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_INACTIVE_STUDENT\");\r\n});"
+                  ],
+                  "_lastExecutionId": "fbf3abc7-e7c6-4ff6-8fa9-7a9466961b6d"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "51faabec-aa9f-46ac-ab9b-226a3af1a9dc",
+        "name": "04 - No Course",
+        "item": [
+          {
+            "id": "8b3933b6-a586-4410-b111-515fc37288f7",
+            "name": "No Course - ERROR_NO_COURSE",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS_DOES_NOT_EXIST\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "ada6da71-b782-4f88-b7cc-d3009cb9b742",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_NO_COURSE\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_NO_COURSE\");\r\n});"
+                  ],
+                  "_lastExecutionId": "a74e510b-35ed-4fcd-9a68-c3872f1a7e85"
+                }
+              }
+            ]
+          },
+          {
+            "id": "221bff38-f8e9-4ec9-aef5-9ef882f6f97a",
+            "name": "Setup - Active Student with CS201",
+            "request": {
+              "url": {
+                "path": [
+                  "students",
+                  "B231234567"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "PUT",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": []
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "bcd791a7-9b5e-4a2e-b26a-ecabcf67667d",
+        "name": "05 - Missing Prerequisite",
+        "item": [
+          {
+            "id": "9d3d499f-e587-466c-b279-9d8c7e2d4f8f",
+            "name": "Setup - Active Student No Prerequisite",
+            "request": {
+              "url": {
+                "path": [
+                  "students",
+                  "B_NO_PREREQ"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "PUT",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": []
+          },
+          {
+            "id": "30756f6b-2e08-42df-aca3-a17512d5ab55",
+            "name": "Missing Prerequisite - ERROR_PREREQUISITES",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B_NO_PREREQ\",\r\n  \"courseID\": \"CS313\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "063622ec-166b-48c6-8654-35a7a2c88652",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_PREREQUISITES\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_PREREQUISITES\");\r\n});"
+                  ],
+                  "_lastExecutionId": "c9a36d76-c86d-4d13-822b-4e0038eb3440"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "b5abe9fc-f207-4910-85ce-4ed5301434b0",
+        "name": "06 - Bad Request",
+        "item": [
+          {
+            "id": "31f31f50-26f7-43a7-9dd5-6e0755a4ebfd",
+            "name": "Bad Request - Missing StudentID",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"courseID\": \"CS313\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "960c6940-3e1d-48ed-a6b3-55e28867953e",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\npm.test(\"Result is ERROR_BAD_REQUEST\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_BAD_REQUEST\");\r\n});"
+                  ],
+                  "_lastExecutionId": "3a791cde-0533-4e6a-bab0-7fb30e599306"
+                }
+              }
+            ]
+          },
+          {
+            "id": "bf603d72-46ad-4931-84d5-17b5d3c266c6",
+            "name": "Bad JSON - ERROR_BAD_JSON",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "cbb45b09-6139-4bdf-b94c-eb4252aec180",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\npm.test(\"Result is ERROR_BAD_JSON\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_BAD_JSON\");\r\n});"
+                  ],
+                  "_lastExecutionId": "944cf859-9670-4795-904d-1a928c03b92d"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "398c01c4-6566-4a76-83fe-b0e59d0ad85b",
+        "name": "07 - No Prerequisites",
+        "item": [
+          {
+            "id": "a6fc08ac-2b7e-452c-84bd-1448b04d7b62",
+            "name": "Setup - Course With No Prerequisites",
+            "request": {
+              "url": {
+                "path": [
+                  "courses",
+                  "CS_NO_PREREQ"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "PUT",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"prerequisites\": []\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": []
+          },
+          {
+            "id": "c8086819-56de-4d15-aa23-ce8ea13f8e15",
+            "name": "No Prerequisites - Successful Registration",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B_NO_PREREQ\",\r\n  \"courseID\": \"CS_NO_PREREQ\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "c398b973-5ae5-4b46-965b-33578fda4c5a",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
+                  ],
+                  "_lastExecutionId": "0e0fda93-2a29-42c2-b8c5-58bac65b8275"
+                }
+              }
+            ]
+          },
+          {
+            "id": "4e5615f7-510f-4ab6-badf-01a47ddafde1",
+            "name": "Setup - Active Student No Prerequisite",
+            "request": {
+              "url": {
+                "path": [
+                  "students",
+                  "B_NO_PREREQ"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "PUT",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": []
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "9f125a75-37a4-4e96-8d98-2414c9eb6d93",
+        "name": "08 - Double Error",
+        "item": [
+          {
+            "id": "eba05438-0c7a-4712-9650-af8e6360e911",
+            "name": "Double Error - Student and Course Missing",
+            "request": {
+              "url": {
+                "path": [
+                  "registrations"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"studentID\": \"B_NOT_EXIST\",\r\n  \"courseID\": \"CS_NOT_EXIST\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "5e63481c-70f1-4d85-8076-7935961f6117",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_NO_STUDENT\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_NO_STUDENT\");\r\n});"
+                  ],
+                  "_lastExecutionId": "e028eea3-b101-4aa8-842e-972f75b200d7"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      }
+    ],
+    "event": [],
+    "variable": [
+      {
+        "type": "any",
+        "value": "",
+        "key": "baseUrl"
+      }
+    ],
+    "info": {
+      "_postman_id": "f982c627-755b-42ed-933b-d550e9b5631a",
+      "name": "Lab05 Registration API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "description": {
+        "content": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+        "type": "text/plain"
+      }
+    }
+  },
+  "environment": {
+    "id": "678c6dad-1d78-4ba9-bec7-1873c8fe23fb",
+    "values": [
+      {
+        "type": "any",
+        "value": "http://localhost:3000",
+        "key": "baseUrl"
+      }
+    ]
+  },
+  "globals": {
+    "id": "271ae593-0df7-411b-8635-8e36c6e700cf",
+    "values": []
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 16,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 9,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 16,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 16,
+        "pending": 0,
+        "failed": 0
+      },
+      "tests": {
+        "total": 16,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 18,
+        "pending": 0,
+        "failed": 0
+      },
+      "testScripts": {
+        "total": 9,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 11.0625,
+      "responseMin": 4,
+      "responseMax": 81,
+      "responseSd": 18.71987162749787,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1791193638180,
+      "completed": 1791193639727
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 16,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "ccfd26bf-ee5f-45b3-86a2-5d6765b92297",
+          "httpRequestId": "2225e1b2-dd9f-465e-9604-2926efd5ac11"
+        },
+        "item": {
+          "id": "dccf3c16-e66c-4c49-a674-b243d0214f1d",
+          "name": "Setup - Active Student with CS201",
+          "request": {
+            "url": {
+              "path": [
+                "students",
+                "B231234567"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "students",
+              "B231234567"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "1d15d388-75a3-4865-8fbf-6433b9651b0f",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "56",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "b42fb524-82bf-4d85-8f9a-790464eda006",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 81,
+          "responseSize": 15
+        },
+        "id": "dccf3c16-e66c-4c49-a674-b243d0214f1d"
+      },
+      {
+        "cursor": {
+          "ref": "f172b836-2e74-4890-93f4-53af3b1f265b",
+          "length": 16,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "57e49433-6df8-4eff-afe3-71c7b73e39b4"
+        },
+        "item": {
+          "id": "a21f3e6e-06bd-4ecd-8513-1ad45a1651d7",
+          "name": "Setup - Course CS313 requires CS201",
+          "request": {
+            "url": {
+              "path": [
+                "courses",
+                "CS313"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "courses",
+              "CS313"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "4a7beb14-c1c6-4e91-8107-f98673c259e2",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "34",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "450a81d5-7f59-4c9b-b9dd-7ab3c4b4ab36",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 6,
+          "responseSize": 15
+        },
+        "id": "a21f3e6e-06bd-4ecd-8513-1ad45a1651d7"
+      },
+      {
+        "cursor": {
+          "ref": "edc2e2c6-6d4d-47d7-920a-82ae1e394d2a",
+          "length": 16,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "fdf26654-151a-4f4f-9a38-f1eafcc4adbe"
+        },
+        "item": {
+          "id": "d51d39d9-5135-43c3-83f6-ef83444f2fab",
+          "name": "Happy Path - Successful Registration",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "24e88773-f3ca-4548-b97f-b39d9e26b5de",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
+                ],
+                "_lastExecutionId": "bf6c7fc6-5fea-4b5a-91b0-cefc6bf688d5"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "864dd20b-53af-4ba7-bfaf-6ccf6d46f5fd",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "57",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "d9aae534-43a0-4493-908c-d7f9dfac538a",
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              44,
+              34,
+              114,
+              101,
+              103,
+              105,
+              115,
+              116,
+              114,
+              97,
+              116,
+              105,
+              111,
+              110,
+              73,
+              68,
+              34,
+              58,
+              49,
+              56,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 35
+        },
+        "id": "d51d39d9-5135-43c3-83f6-ef83444f2fab",
+        "assertions": [
+          {
+            "assertion": "Status code is 201",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is OK",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "c5bcc4f8-6272-43b5-8894-e1c906e88125",
+          "length": 16,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "92ff6e4f-adee-4deb-bf3e-0af8829f0c84"
+        },
+        "item": {
+          "id": "3f580c22-8292-4e1b-8701-c8f4995d0d54",
+          "name": "No Student - ERROR_NO_STUDENT",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B_DOES_NOT_EXIST\",\r\n  \"courseID\": \"CS313\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "924e9e3d-23cd-4beb-824c-f1ee13ebb550",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_NO_STUDENT\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_NO_STUDENT\");\r\n});"
+                ],
+                "_lastExecutionId": "39385f9f-a6aa-4bba-af3d-dda1ed61cd0c"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "99ac8c53-7024-42ed-a6af-af1d22d8b7e9",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "63",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B_DOES_NOT_EXIST\",\r\n  \"courseID\": \"CS313\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "1a74a3d3-ec86-431b-a88f-826663829836",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              82,
+              82,
+              79,
+              82,
+              95,
+              78,
+              79,
+              95,
+              83,
+              84,
+              85,
+              68,
+              69,
+              78,
+              84,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 5,
+          "responseSize": 29
+        },
+        "id": "3f580c22-8292-4e1b-8701-c8f4995d0d54",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is ERROR_NO_STUDENT",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "784d030e-7f43-4e99-987d-3f47575e6d7e",
+          "length": 16,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "ab6a64b9-16d6-4530-bb67-e449e100af4b"
+        },
+        "item": {
+          "id": "4ed66219-a900-4c09-b800-49a84459ee8f",
+          "name": "Setup - Inactive Student",
+          "request": {
+            "url": {
+              "path": [
+                "students",
+                "B_INACTIVE"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"inactive\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "students",
+              "B_INACTIVE"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "dd633295-0452-4b69-ad94-98a0af0f03d2",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "58",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"status\": \"inactive\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "13d45c41-9006-49bb-98e3-6cda3d50a532",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 15
+        },
+        "id": "4ed66219-a900-4c09-b800-49a84459ee8f"
+      },
+      {
+        "cursor": {
+          "ref": "ca499022-d431-4a88-b3aa-cad7065519b7",
+          "length": 16,
+          "cycles": 1,
+          "position": 5,
+          "iteration": 0,
+          "httpRequestId": "4fee0fb5-c1a7-47b3-a605-7015a911971a"
+        },
+        "item": {
+          "id": "85f64f2e-a1f1-4476-a427-3da2f5e0912d",
+          "name": "Inactive Student - ERROR_INACTIVE_STUDENT",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B_INACTIVE\",\r\n  \"courseID\": \"CS313\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "68d3aca0-fc5e-46a8-be8b-a4db4332d4b0",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_INACTIVE_STUDENT\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_INACTIVE_STUDENT\");\r\n});"
+                ],
+                "_lastExecutionId": "fbf3abc7-e7c6-4ff6-8fa9-7a9466961b6d"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "e1857f2d-c2fc-4bee-a93f-2406fe8516ab",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "57",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B_INACTIVE\",\r\n  \"courseID\": \"CS313\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "d5d74b72-a8e2-4b5a-92a4-0f96fa642aaf",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              82,
+              82,
+              79,
+              82,
+              95,
+              73,
+              78,
+              65,
+              67,
+              84,
+              73,
+              86,
+              69,
+              95,
+              83,
+              84,
+              85,
+              68,
+              69,
+              78,
+              84,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 35
+        },
+        "id": "85f64f2e-a1f1-4476-a427-3da2f5e0912d",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is ERROR_INACTIVE_STUDENT",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "21271df5-2aa3-4f7a-8d06-d9fe04392794",
+          "length": 16,
+          "cycles": 1,
+          "position": 6,
+          "iteration": 0,
+          "httpRequestId": "ece6cda3-43ca-47dd-aa89-c7b0e1be1894"
+        },
+        "item": {
+          "id": "8b3933b6-a586-4410-b111-515fc37288f7",
+          "name": "No Course - ERROR_NO_COURSE",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS_DOES_NOT_EXIST\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ada6da71-b782-4f88-b7cc-d3009cb9b742",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_NO_COURSE\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_NO_COURSE\");\r\n});"
+                ],
+                "_lastExecutionId": "a74e510b-35ed-4fcd-9a68-c3872f1a7e85"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "53c8348a-ea94-419e-93a5-28f659b1b3d3",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "69",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS_DOES_NOT_EXIST\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "cbf607c6-bcf1-4211-8aaf-b94fcc6f1091",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              82,
+              82,
+              79,
+              82,
+              95,
+              78,
+              79,
+              95,
+              67,
+              79,
+              85,
+              82,
+              83,
+              69,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 5,
+          "responseSize": 28
+        },
+        "id": "8b3933b6-a586-4410-b111-515fc37288f7",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is ERROR_NO_COURSE",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "475b74d1-2ff1-42c4-85c9-8a1723274cf5",
+          "length": 16,
+          "cycles": 1,
+          "position": 7,
+          "iteration": 0,
+          "httpRequestId": "fbd14aac-926c-48b7-b5ba-b6f3d7eba683"
+        },
+        "item": {
+          "id": "221bff38-f8e9-4ec9-aef5-9ef882f6f97a",
+          "name": "Setup - Active Student with CS201",
+          "request": {
+            "url": {
+              "path": [
+                "students",
+                "B231234567"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "students",
+              "B231234567"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "eddf5174-8c22-4749-89bb-3eb83f0385f0",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "56",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "7e6f689e-de43-47be-b17b-f2ce252a8152",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 25,
+          "responseSize": 15
+        },
+        "id": "221bff38-f8e9-4ec9-aef5-9ef882f6f97a"
+      },
+      {
+        "cursor": {
+          "ref": "ac411d29-5795-4cd8-9d3b-a37992877c1b",
+          "length": 16,
+          "cycles": 1,
+          "position": 8,
+          "iteration": 0,
+          "httpRequestId": "44efaeaa-6efb-4da2-b36c-a718669470c3"
+        },
+        "item": {
+          "id": "9d3d499f-e587-466c-b279-9d8c7e2d4f8f",
+          "name": "Setup - Active Student No Prerequisite",
+          "request": {
+            "url": {
+              "path": [
+                "students",
+                "B_NO_PREREQ"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "students",
+              "B_NO_PREREQ"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "087a2ebb-e6b6-452b-93d7-939eac8620e1",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "49",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "eb0dfb85-54bd-4ff2-af4a-ac4df99e5056",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 15
+        },
+        "id": "9d3d499f-e587-466c-b279-9d8c7e2d4f8f"
+      },
+      {
+        "cursor": {
+          "ref": "e994e6a2-4c2d-4403-b820-74d1325e477b",
+          "length": 16,
+          "cycles": 1,
+          "position": 9,
+          "iteration": 0,
+          "httpRequestId": "f0c38580-23b6-4c2a-8847-84937a8390a5"
+        },
+        "item": {
+          "id": "30756f6b-2e08-42df-aca3-a17512d5ab55",
+          "name": "Missing Prerequisite - ERROR_PREREQUISITES",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B_NO_PREREQ\",\r\n  \"courseID\": \"CS313\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "063622ec-166b-48c6-8654-35a7a2c88652",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_PREREQUISITES\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_PREREQUISITES\");\r\n});"
+                ],
+                "_lastExecutionId": "c9a36d76-c86d-4d13-822b-4e0038eb3440"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "c5fdcbbd-a854-4479-9b3d-28fca1c5edd4",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "58",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B_NO_PREREQ\",\r\n  \"courseID\": \"CS313\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "d6987c18-2464-4b20-bc0e-5ad38a169164",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              82,
+              82,
+              79,
+              82,
+              95,
+              80,
+              82,
+              69,
+              82,
+              69,
+              81,
+              85,
+              73,
+              83,
+              73,
+              84,
+              69,
+              83,
+              34,
+              44,
+              34,
+              109,
+              105,
+              115,
+              115,
+              105,
+              110,
+              103,
+              34,
+              58,
+              91,
+              34,
+              67,
+              83,
+              50,
+              48,
+              49,
+              34,
+              93,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 52
+        },
+        "id": "30756f6b-2e08-42df-aca3-a17512d5ab55",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is ERROR_PREREQUISITES",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "9e0ef22c-25e1-4345-af0e-72c49569798e",
+          "length": 16,
+          "cycles": 1,
+          "position": 10,
+          "iteration": 0,
+          "httpRequestId": "947f8a63-fcef-4b0f-a5df-70f135c4396f"
+        },
+        "item": {
+          "id": "31f31f50-26f7-43a7-9dd5-6e0755a4ebfd",
+          "name": "Bad Request - Missing StudentID",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"courseID\": \"CS313\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "960c6940-3e1d-48ed-a6b3-55e28867953e",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\npm.test(\"Result is ERROR_BAD_REQUEST\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_BAD_REQUEST\");\r\n});"
+                ],
+                "_lastExecutionId": "3a791cde-0533-4e6a-bab0-7fb30e599306"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "d9cbde0b-9cf1-48a9-af83-125d6467b6f9",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "27",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"courseID\": \"CS313\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "104297bc-959a-496c-a4df-21fe7145f598",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              82,
+              82,
+              79,
+              82,
+              95,
+              66,
+              65,
+              68,
+              95,
+              82,
+              69,
+              81,
+              85,
+              69,
+              83,
+              84,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 30
+        },
+        "id": "31f31f50-26f7-43a7-9dd5-6e0755a4ebfd",
+        "assertions": [
+          {
+            "assertion": "Status code is 400",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is ERROR_BAD_REQUEST",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "f1bb8456-39b5-40d3-9f87-6c6a106342dc",
+          "length": 16,
+          "cycles": 1,
+          "position": 11,
+          "iteration": 0,
+          "httpRequestId": "7c7ce9e6-7ef7-496b-9412-1fa5d512c239"
+        },
+        "item": {
+          "id": "bf603d72-46ad-4931-84d5-17b5d3c266c6",
+          "name": "Bad JSON - ERROR_BAD_JSON",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb45b09-6139-4bdf-b94c-eb4252aec180",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\npm.test(\"Result is ERROR_BAD_JSON\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_BAD_JSON\");\r\n});"
+                ],
+                "_lastExecutionId": "944cf859-9670-4795-904d-1a928c03b92d"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "4704d71e-c1ec-4fa0-80b8-402caa6d14dc",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "54",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "62bee639-5ffa-4c45-af95-76d9857f3c5f",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              82,
+              82,
+              79,
+              82,
+              95,
+              66,
+              65,
+              68,
+              95,
+              74,
+              83,
+              79,
+              78,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 27
+        },
+        "id": "bf603d72-46ad-4931-84d5-17b5d3c266c6",
+        "assertions": [
+          {
+            "assertion": "Status code is 400",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is ERROR_BAD_JSON",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "baef3241-85ca-4e12-b32d-8ec3cd140d2a",
+          "length": 16,
+          "cycles": 1,
+          "position": 12,
+          "iteration": 0,
+          "httpRequestId": "4caa4f0d-5c47-4ac8-b650-56c06b221767"
+        },
+        "item": {
+          "id": "a6fc08ac-2b7e-452c-84bd-1448b04d7b62",
+          "name": "Setup - Course With No Prerequisites",
+          "request": {
+            "url": {
+              "path": [
+                "courses",
+                "CS_NO_PREREQ"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"prerequisites\": []\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "courses",
+              "CS_NO_PREREQ"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "773cc6f7-af8a-48bb-b586-99deb9f292fe",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "27",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"prerequisites\": []\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "a129ded2-3e53-4db5-a06c-8f2750cf1658",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 15
+        },
+        "id": "a6fc08ac-2b7e-452c-84bd-1448b04d7b62"
+      },
+      {
+        "cursor": {
+          "ref": "803f9972-e6de-428d-bbd8-6be1c876e155",
+          "length": 16,
+          "cycles": 1,
+          "position": 13,
+          "iteration": 0,
+          "httpRequestId": "331f40f5-b49a-4c7a-9de9-1dec9861006d"
+        },
+        "item": {
+          "id": "c8086819-56de-4d15-aa23-ce8ea13f8e15",
+          "name": "No Prerequisites - Successful Registration",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B_NO_PREREQ\",\r\n  \"courseID\": \"CS_NO_PREREQ\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c398b973-5ae5-4b46-965b-33578fda4c5a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
+                ],
+                "_lastExecutionId": "0e0fda93-2a29-42c2-b8c5-58bac65b8275"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "eda09fe8-a051-4376-a930-cbd40956d63f",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "65",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B_NO_PREREQ\",\r\n  \"courseID\": \"CS_NO_PREREQ\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "936e4073-3276-44c7-9daf-1f6a25175024",
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              44,
+              34,
+              114,
+              101,
+              103,
+              105,
+              115,
+              116,
+              114,
+              97,
+              116,
+              105,
+              111,
+              110,
+              73,
+              68,
+              34,
+              58,
+              49,
+              57,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 5,
+          "responseSize": 35
+        },
+        "id": "c8086819-56de-4d15-aa23-ce8ea13f8e15",
+        "assertions": [
+          {
+            "assertion": "Status code is 201",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is OK",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "cf7aca85-4101-42c0-b374-68299183b505",
+          "length": 16,
+          "cycles": 1,
+          "position": 14,
+          "iteration": 0,
+          "httpRequestId": "a708c71b-c8d7-4385-b22a-fbd39b30badd"
+        },
+        "item": {
+          "id": "4e5615f7-510f-4ab6-badf-01a47ddafde1",
+          "name": "Setup - Active Student No Prerequisite",
+          "request": {
+            "url": {
+              "path": [
+                "students",
+                "B_NO_PREREQ"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "students",
+              "B_NO_PREREQ"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "5d5178be-9095-4903-91c9-b0a573c83006",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "49",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "0cef9ec9-6e5f-495b-9e56-c04c26a8ee12",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              79,
+              75,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 15
+        },
+        "id": "4e5615f7-510f-4ab6-badf-01a47ddafde1"
+      },
+      {
+        "cursor": {
+          "ref": "8e6b1523-8cbc-45d7-b6cf-dc59704befba",
+          "length": 16,
+          "cycles": 1,
+          "position": 15,
+          "iteration": 0,
+          "httpRequestId": "fcee8409-8fde-4995-8a46-e0f8d5fb13cb"
+        },
+        "item": {
+          "id": "eba05438-0c7a-4712-9650-af8e6360e911",
+          "name": "Double Error - Student and Course Missing",
+          "request": {
+            "url": {
+              "path": [
+                "registrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentID\": \"B_NOT_EXIST\",\r\n  \"courseID\": \"CS_NOT_EXIST\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "5e63481c-70f1-4d85-8076-7935961f6117",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is ERROR_NO_STUDENT\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"ERROR_NO_STUDENT\");\r\n});"
+                ],
+                "_lastExecutionId": "e028eea3-b101-4aa8-842e-972f75b200d7"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "registrations"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "ae63f77c-0ad7-4cac-acc2-3c6f9df616b6",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "65",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"studentID\": \"B_NOT_EXIST\",\r\n  \"courseID\": \"CS_NOT_EXIST\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "678da626-755a-4f95-8ad7-55a7e3c8c5d9",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 05 Oct 2026 09:47:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              82,
+              82,
+              79,
+              82,
+              95,
+              78,
+              79,
+              95,
+              83,
+              84,
+              85,
+              68,
+              69,
+              78,
+              84,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 5,
+          "responseSize": 29
+        },
+        "id": "eba05438-0c7a-4712-9650-af8e6360e911",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          },
+          {
+            "assertion": "Result is ERROR_NO_STUDENT",
+            "skipped": false
+          }
+        ]
+      }
+    ],
+    "transfers": {
+      "responseTotal": 405
+    },
+    "failures": [],
+    "error": null
+  }
+}
