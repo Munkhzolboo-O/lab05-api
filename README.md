@@ -181,19 +181,33 @@ FAIL туршилтад сервер ажиллаж байсан боловч т
 
 ## 10. Тест ажиллуулах заавар
 
-Эхлээд API серверийг ажиллуулна.
+### Newman тайланг файлд хадгалах
 
-node server.js
+Эхлээд API серверийг ажиллуулна:
 
-Дараа нь өөр терминалаас үндсэн collection-ийг ажиллуулна.
+    node server.js
 
-newman.cmd run lab05-collection.json --env-var "baseUrl=http://localhost:3000"
+Дараа нь өөр PowerShell терминалаас туршилтуудыг ажиллуулна.
 
-FAIL туршилтыг ажиллуулах:
+**PASS — сервер ажиллаж байх үед:**
 
-newman.cmd run lab05-collection-fail.json --env-var "baseUrl=http://localhost:3000"
+    cmd /c "newman.cmd run lab05-collection.json --env-var baseUrl=http://localhost:3000 --reporters cli --reporter-cli-no-color > results\newman-pass.txt 2>&1"
+    echo $LASTEXITCODE
 
-DOWN туршилтын үед API серверийг зогсоож, үндсэн collection-ийг дахин ажиллуулна.
+**FAIL — сервер ажиллаж байх үед:**
+
+    cmd /c "newman.cmd run lab05-collection-fail.json --env-var baseUrl=http://localhost:3000 --reporters cli --reporter-cli-no-color > results\newman-fail.txt 2>&1"
+    echo $LASTEXITCODE
+
+**DOWN — серверийг зогсоосны дараа:**
+
+    cmd /c "newman.cmd run lab05-collection.json --env-var baseUrl=http://localhost:3000 --reporters cli --reporter-cli-no-color > results\newman-down.txt 2>&1"
+    echo $LASTEXITCODE
+
+PASS туршилтын exit code 0, зориуд алдаатай FAIL туршилтын exit code 1, сервер ажиллахгүй DOWN туршилтын exit code 1 байна.
+
+FAIL туршилтад assertion-ийн хүлээгдэж буй утгыг зориудаар буруу тохируулсан. DOWN туршилтад сервертэй холбогдож чадаагүй тул ECONNREFUSED алдаа гарсан.
+
 
 ## 11. Төслийн файлууд
 
