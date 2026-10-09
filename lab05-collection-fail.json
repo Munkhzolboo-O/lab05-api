@@ -1,8 +1,8 @@
-{
+﻿{
   "info": {
     "_postman_id": "f982c627-755b-42ed-933b-d550e9b5631a",
     "name": "Lab05 Registration API",
-    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\nâ€¢ Group related requests\nâ€¢ Test your API in real-world scenarios\nâ€¢ Document and share your requests\n\nUpdate the name and overview whenever youâ€™re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "58727003",
     "_collection_link": "https://go.postman.co/collection/58727003-f982c627-755b-42ed-933b-d550e9b5631a?source=collection_link"
@@ -73,7 +73,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
                 ]
               }
             }
@@ -107,6 +107,33 @@
     {
       "name": "02 - No Student",
       "item": [
+        {
+          "name": "Setup - Course CS313 requires CS201",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/CS313",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "CS313"
+              ]
+            }
+          },
+          "response": []
+        },
         {
           "name": "No Student - ERROR_NO_STUDENT",
           "event": [
@@ -177,6 +204,33 @@
           "response": []
         },
         {
+          "name": "Setup - Course CS313 requires CS201",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/CS313",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "CS313"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Inactive Student - ERROR_INACTIVE_STUDENT",
           "event": [
             {
@@ -219,6 +273,33 @@
       "name": "04 - No Course",
       "item": [
         {
+          "name": "Setup - Active Student with CS201",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/students/B231234567",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "students",
+                "B231234567"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "No Course - ERROR_NO_COURSE",
           "event": [
             {
@@ -254,33 +335,6 @@
             }
           },
           "response": []
-        },
-        {
-          "name": "Setup - Active Student with CS201",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/students/B231234567",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "students",
-                "B231234567"
-              ]
-            }
-          },
-          "response": []
         }
       ]
     },
@@ -309,6 +363,33 @@
               "path": [
                 "students",
                 "B_NO_PREREQ"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Setup - Course CS313 requires CS201",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/CS313",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "CS313"
               ]
             }
           },
@@ -436,6 +517,33 @@
       "name": "07 - No Prerequisites",
       "item": [
         {
+          "name": "Setup - Active Student No Prerequisite",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/students/B_NO_PREREQ",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "students",
+                "B_NO_PREREQ"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Setup - Course With No Prerequisites",
           "request": {
             "method": "PUT",
@@ -470,7 +578,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Result is OK\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.result).to.eql(\"OK\");\r\n});"
                 ]
               }
             }
@@ -494,33 +602,6 @@
               ],
               "path": [
                 "registrations"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Setup - Active Student No Prerequisite",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/students/B_NO_PREREQ",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "students",
-                "B_NO_PREREQ"
               ]
             }
           },
