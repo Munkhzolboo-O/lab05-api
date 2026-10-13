@@ -1,4 +1,4 @@
-# Лабораторийн ажил №5 — API систем тест: Postman ба Newman
+﻿# Лабораторийн ажил №5 — API систем тест: Postman ба Newman
 
 
 **Оюутны нэр:** Оюунсүрэн Мөнхзолбоо  
@@ -161,53 +161,24 @@ Exit code: 1
 
 Happy Path болон No Prerequisites хувилбаруудад HTTP 201 статусыг 200 гэж зориудаар хүлээсэн тул хоёр assertion амжилтгүй болсон. Энэ нь API-ийн алдаа биш, харин тестийн хүлээгдэж буй үр дүнг буруу тохируулснаас үүссэн алдаа юм.
 
-## 9.3 DOWN туршилт
-
-API серверийг зогсоож, үндсэн collection-ийг Newman ашиглан дахин ажиллуулсан.
-
-Collection: lab05-collection.json
-
-Үр дүнгийн файл: results/newman-down.txt
-
-Алдаа: ECONNREFUSED
-
-Exit code: 1
-
-Үр дүн: DOWN
-
-Сервер ажиллахгүй байсан учраас Newman API-тай холбогдож чадаагүй бөгөөд ECONNREFUSED алдаа гарсан.
-
+	
 FAIL туршилтад сервер ажиллаж байсан боловч тестийн хүлээгдэж буй үр дүн бодит хариутай зөрсөн. Харин DOWN туршилтад сервертэй холболт үүсээгүй. Иймээс FAIL нь oracle-ийн алдаа, DOWN нь холболтын буюу интерфейсийн алдаа юм.
 
 ## 10. Тест ажиллуулах заавар
 
-### Newman тайланг файлд хадгалах
+Эхлээд API серверийг ажиллуулна.
 
-Эхлээд API серверийг ажиллуулна:
+node server.js
 
-    node server.js
+Дараа нь өөр терминалаас үндсэн collection-ийг ажиллуулна.
 
-Дараа нь өөр PowerShell терминалаас туршилтуудыг ажиллуулна.
+newman.cmd run lab05-collection.json 
 
-**PASS — сервер ажиллаж байх үед:**
+FAIL туршилтыг ажиллуулах:
 
-    cmd /c "newman.cmd run lab05-collection.json --env-var baseUrl=http://localhost:3000 --reporters cli --reporter-cli-no-color > results\newman-pass.txt 2>&1"
-    echo $LASTEXITCODE
+newman.cmd run lab05-collection-fail.json 
 
-**FAIL — сервер ажиллаж байх үед:**
-
-    cmd /c "newman.cmd run lab05-collection-fail.json --env-var baseUrl=http://localhost:3000 --reporters cli --reporter-cli-no-color > results\newman-fail.txt 2>&1"
-    echo $LASTEXITCODE
-
-**DOWN — серверийг зогсоосны дараа:**
-
-    cmd /c "newman.cmd run lab05-collection.json --env-var baseUrl=http://localhost:3000 --reporters cli --reporter-cli-no-color > results\newman-down.txt 2>&1"
-    echo $LASTEXITCODE
-
-PASS туршилтын exit code 0, зориуд алдаатай FAIL туршилтын exit code 1, сервер ажиллахгүй DOWN туршилтын exit code 1 байна.
-
-FAIL туршилтад assertion-ийн хүлээгдэж буй утгыг зориудаар буруу тохируулсан. DOWN туршилтад сервертэй холбогдож чадаагүй тул ECONNREFUSED алдаа гарсан.
-
+DOWN туршилтын үед API серверийг зогсоож, үндсэн collection-ийг дахин ажиллуулна.
 
 ## 11. Төслийн файлууд
 

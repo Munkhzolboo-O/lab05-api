@@ -1,4 +1,4 @@
-(node:19244) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(node:2452) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
 (Use `node --trace-deprecation ...` to show where the warning was created)
 newman
 
@@ -6,7 +6,7 @@ Lab05 Registration API
 
 □ 01 - Happy Path
 └ Setup - Active Student with CS201
-  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 47ms]
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 53ms]
 
 └ Setup - Course CS313 requires CS201
   PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 6ms]
@@ -18,43 +18,43 @@ Lab05 Registration API
 
 □ 02 - No Student
 └ Setup - Course CS313 requires CS201
-  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 3ms]
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 4ms]
 
 └ No Student - ERROR_NO_STUDENT
-  POST http://localhost:3000/registrations [200 OK, 192B, 3ms]
+  POST http://localhost:3000/registrations [200 OK, 192B, 4ms]
   √  Status code is 200
   √  Result is ERROR_NO_STUDENT
 
 □ 03 - Inactive Student
 └ Setup - Inactive Student
-  PUT http://localhost:3000/students/B_INACTIVE [200 OK, 178B, 2ms]
+  PUT http://localhost:3000/students/B_INACTIVE [200 OK, 178B, 4ms]
 
 └ Setup - Course CS313 requires CS201
-  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 3ms]
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 4ms]
 
 └ Inactive Student - ERROR_INACTIVE_STUDENT
-  POST http://localhost:3000/registrations [200 OK, 198B, 3ms]
+  POST http://localhost:3000/registrations [200 OK, 198B, 8ms]
   √  Status code is 200
   √  Result is ERROR_INACTIVE_STUDENT
 
 □ 04 - No Course
 └ Setup - Active Student with CS201
-  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 3ms]
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 7ms]
 
 └ No Course - ERROR_NO_COURSE
-  POST http://localhost:3000/registrations [200 OK, 191B, 4ms]
+  POST http://localhost:3000/registrations [200 OK, 191B, 7ms]
   √  Status code is 200
   √  Result is ERROR_NO_COURSE
 
 □ 05 - Missing Prerequisite
 └ Setup - Active Student No Prerequisite
-  PUT http://localhost:3000/students/B_NO_PREREQ [200 OK, 178B, 2ms]
+  PUT http://localhost:3000/students/B_NO_PREREQ [200 OK, 178B, 4ms]
 
 └ Setup - Course CS313 requires CS201
-  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 3ms]
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 4ms]
 
 └ Missing Prerequisite - ERROR_PREREQUISITES
-  POST http://localhost:3000/registrations [200 OK, 215B, 3ms]
+  POST http://localhost:3000/registrations [200 OK, 215B, 4ms]
   √  Status code is 200
   √  Result is ERROR_PREREQUISITES
 
@@ -71,38 +71,38 @@ Lab05 Registration API
 
 □ 07 - No Prerequisites
 └ Setup - Active Student No Prerequisite
-  PUT http://localhost:3000/students/B_NO_PREREQ [200 OK, 178B, 2ms]
+  PUT http://localhost:3000/students/B_NO_PREREQ [200 OK, 178B, 4ms]
 
 └ Setup - Course With No Prerequisites
-  PUT http://localhost:3000/courses/CS_NO_PREREQ [200 OK, 178B, 2ms]
+  PUT http://localhost:3000/courses/CS_NO_PREREQ [200 OK, 178B, 3ms]
 
 └ No Prerequisites - Successful Registration
-  POST http://localhost:3000/registrations [201 Created, 202B, 2ms]
+  POST http://localhost:3000/registrations [201 Created, 202B, 3ms]
   √  Status code is 201
   √  Result is OK
 
 □ 08 - Double Error
 └ Double Error - Student and Course Missing
-  POST http://localhost:3000/registrations [200 OK, 192B, 2ms]
+  POST http://localhost:3000/registrations [200 OK, 192B, 3ms]
   √  Status code is 200
   √  Result is ERROR_NO_STUDENT
 
-┌─────────────────────────┬─────────────────┬─────────────────┐
-│                         │        executed │          failed │
-├─────────────────────────┼─────────────────┼─────────────────┤
-│              iterations │               1 │               0 │
-├─────────────────────────┼─────────────────┼─────────────────┤
-│                requests │              19 │               0 │
-├─────────────────────────┼─────────────────┼─────────────────┤
-│            test-scripts │               9 │               0 │
-├─────────────────────────┼─────────────────┼─────────────────┤
-│      prerequest-scripts │               0 │               0 │
-├─────────────────────────┼─────────────────┼─────────────────┤
-│              assertions │              18 │               0 │
-├─────────────────────────┴─────────────────┴─────────────────┤
-│ total run duration: 1752ms                                  │
-├─────────────────────────────────────────────────────────────┤
-│ total data received: 448B (approx)                          │
-├─────────────────────────────────────────────────────────────┤
-│ average response time: 5ms [min: 2ms, max: 47ms, s.d.: 9ms] │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────┬──────────────────┬─────────────────┐
+│                         │         executed │          failed │
+├─────────────────────────┼──────────────────┼─────────────────┤
+│              iterations │                1 │               0 │
+├─────────────────────────┼──────────────────┼─────────────────┤
+│                requests │               19 │               0 │
+├─────────────────────────┼──────────────────┼─────────────────┤
+│            test-scripts │                9 │               0 │
+├─────────────────────────┼──────────────────┼─────────────────┤
+│      prerequest-scripts │                0 │               0 │
+├─────────────────────────┼──────────────────┼─────────────────┤
+│              assertions │               18 │               0 │
+├─────────────────────────┴──────────────────┴─────────────────┤
+│ total run duration: 1318ms                                   │
+├──────────────────────────────────────────────────────────────┤
+│ total data received: 448B (approx)                           │
+├──────────────────────────────────────────────────────────────┤
+│ average response time: 6ms [min: 3ms, max: 53ms, s.d.: 10ms] │
+└──────────────────────────────────────────────────────────────┘
